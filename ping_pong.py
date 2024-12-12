@@ -8,6 +8,8 @@ win_height = 500
 window = display.set_mode((win_width, win_height))
 window.fill(back)
 game = True
+speed_x = 3
+speed_y = 3
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed, wight, height): 
@@ -36,6 +38,9 @@ class Player(GameSprite):
         if keys[K_DOWN] and self.rect.y > win_height - 80:
             self.rect.y += self.speed 
 
+racket_r = Player('racket.png', 30, 200, 4, 50, 150)
+racket_l = Player('racket.png', 520, 200, 4, 50, 150)
+tenis_ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
 
 
 
@@ -44,9 +49,15 @@ while game:
         if e.type == QUIT:
             game = False
 
+    racket_l.update_l()
+    racket_r.update_r()
+    tenis_ball.reset() 
+    racket_l.reset()
+    racket_r.reset()
 
     window.fill(back)
     display.update()
     time.delay(50)
-        
+
+
 
