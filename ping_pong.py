@@ -11,6 +11,8 @@ game = True
 speed_x = 4
 speed_y = 4
 finish = False
+point_l = 0
+point_r = 0
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed, wight, height): 
@@ -45,33 +47,57 @@ racket_r = Player('racket.png', 30, 200, 4, 50, 150)
 racket_l = Player('racket.png', 520, 200, 4, 50, 150)
 ball = GameSprite('tenis_ball.png', 200, 50, 4, 50, 50)
 
+font.init()
+font1 = font.Font(None, 35)
+loseL = font1.render('PLAYER LEFT LOSE!', True, (180, 0, 0))
+loseR = font1.render('PLAYER RIGHT LOSE!', True, (180, 0, 0))
 
 
 while game:
+    point_l = 0
+    point_r = 0
     for e in event.get():
         if e.type == QUIT:
             game = False
 
 
-    window.fill(back)
-    racket_l.update_l()
-    racket_r.update_r()
-    ball.reset() 
-    racket_l.reset()
-    racket_r.reset()
+
+    
+
+
 
     if finish != True:
+        window.fill(back)
+        racket_l.update_l()
+        racket_r.update_r()
+       
         ball.rect.x += speed_x
         ball.rect.y += speed_y
     
-        if sprite.collide_rect(racket_r, ball) or sprite.collide_rect(racket_l, ball):
+        if sprite.collide_rect(racket_r, ball):
             speed_x *= -1
+            point_r += 1
+
+        if sprite.collide_rect(racket_l, ball):
+            speed_x *= -1
+            point_l += 1
 
         if ball.rect.y > 460 or ball.rect.y < 0:
             speed_y *= -1
         
-        if ball.rect.x < 50 or ball.rect.x > 650:
+        if ball.rect.x < 50:  
             fiish = True 
+            window.blit(loseL, (175, 200))
+
+        if ball.rect.x > 550:
+            finish = True
+            window.blit(loseR, (175, 200))
+
+        racket_l.reset()
+        racket_r.reset()
+        ball.reset()
+
+        
 
     
     display.update()
